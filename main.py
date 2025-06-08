@@ -23,17 +23,27 @@ def verify():
 @app.route("/webhook", methods=["POST"])
 def webhook():
     data = request.json
-    user_id = data.get("user_id")
-    user_message = data.get("message")
 
-    if not user_id or not user_message:
-        return jsonify({"error": "Faltan datos"}), 400
+    try:
+        # Estructura real desde WhatsApp (Meta)
+        entry = data["entry"][0]
+        change = entry["changes"][0]
+        message_data = change["value"]["messages"][0]
 
+        user_id = message_data["from"]
+        user_message = message_data["text"]["body"]
+    except Exception as e:
+        return jsonify({"error": "Estructura no reconocida", "detalles": str(e)}), 400
+
+    # Usamos el flujo de asistente
     state = get_user_state(user_id)
     next_message, updated_state = get_next_message(state, user_message)
     update_user_state(user_id, updated_state)
 
-    return jsonify({"reply": next_message})
+    # WhatsApp Cloud API requiere responder con status 200 sin datos
+    # Por ahora devolvemos el reply como confirmación para depurar
+    return jsonify({"reply": next_message}), 200
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
