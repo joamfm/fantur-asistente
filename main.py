@@ -1,4 +1,4 @@
-
+from whatsapp_sender import send_whatsapp_message
 from flask import Flask, request, jsonify
 from flow import get_next_message
 from state_manager import get_user_state, update_user_state
@@ -43,6 +43,7 @@ def webhook():
     state = get_user_state(user_id)
     next_message, updated_state = get_next_message(state, user_message)
     update_user_state(user_id, updated_state)
+    send_whatsapp_message(user_id, next_message)
 
     # WhatsApp Cloud API requiere responder con status 200 sin datos
     return jsonify({"reply": next_message}), 200
