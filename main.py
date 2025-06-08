@@ -24,8 +24,9 @@ def verify():
 def webhook():
     data = request.json
 
-print("[Webhook] Payload recibido:")
-print(data)
+    print("[Webhook] Payload recibido:")
+    print(data)
+
     try:
         # Estructura real desde WhatsApp (Meta)
         entry = data["entry"][0]
@@ -44,9 +45,7 @@ print(data)
     update_user_state(user_id, updated_state)
 
     # WhatsApp Cloud API requiere responder con status 200 sin datos
-    # Por ahora devolvemos el reply como confirmación para depurar
     return jsonify({"reply": next_message}), 200
-
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
