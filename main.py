@@ -8,6 +8,17 @@ app = Flask(__name__)
 @app.route("/", methods=["GET"])
 def home():
     return "Asistente Fantur está activo"
+@app.route("/webhook", methods=["GET"])
+def verify():
+    verify_token = "fantur2025"
+    mode = request.args.get("hub.mode")
+    token = request.args.get("hub.verify_token")
+    challenge = request.args.get("hub.challenge")
+
+    if mode == "subscribe" and token == verify_token:
+        return challenge, 200
+    else:
+        return "Unauthorized", 403
 
 @app.route("/webhook", methods=["POST"])
 def webhook():
