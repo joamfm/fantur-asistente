@@ -24,6 +24,8 @@ def verify():
 def webhook():
     data = request.json
 
+print("[Webhook] Payload recibido:")
+print(data)
     try:
         # Estructura real desde WhatsApp (Meta)
         entry = data["entry"][0]
@@ -33,6 +35,7 @@ def webhook():
         user_id = message_data["from"]
         user_message = message_data["text"]["body"]
     except Exception as e:
+        print("[Webhook] Error al procesar:", e)
         return jsonify({"error": "Estructura no reconocida", "detalles": str(e)}), 400
 
     # Usamos el flujo de asistente
