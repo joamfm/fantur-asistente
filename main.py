@@ -32,8 +32,13 @@ def webhook():
     change = entry["changes"][0]
 
     if "messages" not in change["value"]:
-        print("[Sistema] Evento automático recibido (status, delivery, etc.)")
-        return jsonify({"status": "sistema"}), 200
+    status_info = change["value"].get("statuses", [{}])[0]
+    status_id = status_info.get("id", "sin_id")
+    status_type = status_info.get("status", "desconocido")
+
+    print(f"[Sistema] Evento automático recibido → ID: {status_id} | Estado: {status_type}")
+    return jsonify({"status": "sistema"}), 200
+
 
     message_data = change["value"]["messages"][0]
     user_id = message_data["from"]
