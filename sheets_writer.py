@@ -1,18 +1,20 @@
 
 import gspread
-from oauth2client.service_account import ServiceAccountCredentials
+from google.oauth2.service_account import Credentials
 from datetime import datetime
-
-# Ruta local al archivo JSON de credenciales
-CREDENTIALS_FILE = "fantur-462502-a88748375bae.json"
+import os
+import json
 
 # ID de la planilla de Google Sheets
 SPREADSHEET_ID = "1-D8YrT1KxI7F3p9MRP7TS6Xv9OJZD9SJcyUtOCgyQDc"
 
-# Inicializa la conexión a Google Sheets
+# Inicializa la conexión a Google Sheets usando una variable de entorno
 def connect_to_sheet():
-    scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-    creds = ServiceAccountCredentials.from_json_keyfile_name(CREDENTIALS_FILE, scope)
+    creds_info = json.loads(os.environ["GOOGLE_SHEETS_CREDS"])
+    creds = Credentials.from_service_account_info(creds_info, scopes=[
+        "https://www.googleapis.com/auth/spreadsheets",
+        "https://www.googleapis.com/auth/drive"
+    ])
     client = gspread.authorize(creds)
     sheet = client.open_by_key(SPREADSHEET_ID).sheet1
     return sheet
