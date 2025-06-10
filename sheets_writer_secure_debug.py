@@ -4,7 +4,7 @@ from datetime import datetime
 import os
 import json
 
-SPREADSHEET_ID = "1-D8YrT1KxI7F3p9MRP7S6Xv9OJZD9SJcyUtOCgyQDc"
+SPREADSHEET_ID = "1-D8YrT1KxI7F3p9MRP7TS6Xv9OJZD9SJcyUtOCgyQDc"
 
 def connect_to_sheet():
     print("[DEBUG] Leyendo GOOGLE_SHEETS_CREDS...")
