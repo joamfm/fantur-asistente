@@ -27,17 +27,20 @@ def webhook():
     print("[Webhook] Payload recibido:")
     print(data)
 
- try:
-    entry = data["entry"][0]
-    change = entry["changes"][0]
+    try:
+        entry = data["entry"][0]
+        change = entry["changes"][0]
 
-    if "messages" not in change["value"]:
-    status_info = change["value"].get("statuses", [{}])[0]
-    status_id = status_info.get("id", "sin_id")
-    status_type = status_info.get("status", "desconocido")
+        if "messages" not in change["value"]:
+            status_info = change["value"].get("statuses", [{}])[0]
+            status_id = status_info.get("id", "sin_id")
+            status_type = status_info.get("status", "desconocido")
+            print(f"[Sistema] Evento automático recibido → ID: {status_id} | Estado: {status_type}")
+            return jsonify({"status": "sistema"}), 200
 
-    print(f"[Sistema] Evento automático recibido → ID: {status_id} | Estado: {status_type}")
-    return jsonify({"status": "sistema"}), 200
+        message_data = change["value"]["messages"][0]
+        user_id = message_data["from"]
+        user_message = message_data["text"]["body"]
 
 
     message_data = change["value"]["messages"][0]
