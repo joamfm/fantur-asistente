@@ -28,7 +28,7 @@ def registrar_interaccion(user_id, user_message, bot_response, state):
         sheet = connect_to_sheet()
 
         row = [
-            datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            datetime.now().strftime("%Y-%m-%d %H:%M:%S"),  # timestamp
             user_id,
             user_message,
             bot_response,
@@ -42,7 +42,10 @@ def registrar_interaccion(user_id, user_message, bot_response, state):
             else:
                 row.append(str(valor))
 
+        print("[DEBUG] Fila generada:", row)
         sheet.append_row(row)
         print("[Sheets] Registro exitoso en la hoja de cálculo.")
+
     except Exception as e:
         print("[Sheets] Error al registrar:", e)
+
