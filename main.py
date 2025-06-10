@@ -3,7 +3,8 @@ from flask import Flask, request, jsonify
 from whatsapp_sender import send_whatsapp_message
 from flow import get_next_message
 from state_manager import get_user_state, update_user_state
-from sheets_writer_secure import registrar_interaccion
+from sheets_writer_secure_debug import registrar_interaccion
+
 
 app = Flask(__name__)
 
