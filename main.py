@@ -27,14 +27,17 @@ def webhook():
     print("[Webhook] Payload recibido:")
     print(data)
 
-    try:
-        # Estructura real desde WhatsApp (Meta)
-        entry = data["entry"][0]
-        change = entry["changes"][0]
-        message_data = change["value"]["messages"][0]
+ try:
+    entry = data["entry"][0]
+    change = entry["changes"][0]
 
-        user_id = message_data["from"]
-        user_message = message_data["text"]["body"]
+    if "messages" not in change["value"]:
+        print("[Sistema] Evento automático recibido (status, delivery, etc.)")
+        return jsonify({"status": "sistema"}), 200
+
+    message_data = change["value"]["messages"][0]
+    user_id = message_data["from"]
+    user_message = message_data["text"]["body"]
     except Exception as e:
         print("[Webhook] Error al procesar:", e)
         return jsonify({"error": "Estructura no reconocida", "detalles": str(e)}), 400
